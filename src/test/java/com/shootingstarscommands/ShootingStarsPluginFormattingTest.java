@@ -9,13 +9,23 @@ import org.junit.Test;
 public class ShootingStarsPluginFormattingTest
 {
 	@Test
-	public void formatsCompactStarListWithLocations()
+	public void formatsStarListAsSeparateLines()
 	{
 		String formatted = ShootingStarsPlugin.formatStars(Arrays.asList(
 			new Star(533, 9, "West Lumbridge Swamp", 1L),
 			new Star(330, 8, "Al Kharid", 1L)));
 
-		assertEquals("Stars: T9 W533 (West Lumbridge Swamp) | T8 W330 (Al Kharid)", formatted);
+		assertEquals("Stars:\nW533 T9 - West Lumbridge Swamp\nW330 T8 - Al Kharid", formatted);
+	}
+
+	@Test
+	public void includesTheFilterInTheHeading()
+	{
+		StarFilter filter = StarFilter.fromCommand("!stars isafdar");
+
+		assertEquals("Stars [Isafdar]:\nW406 T8 - Isafdar runite rocks",
+			ShootingStarsPlugin.formatStars(Collections.singletonList(
+				new Star(406, 8, "Isafdar runite rocks", 1L)), filter));
 	}
 
 	@Test
